@@ -14,6 +14,6 @@ public class Game
 		w.setVisible(true);
 		w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GameLoop gl = new GameLoop(w);
-		gl.run();
+		//gl.run();
 	}
 }

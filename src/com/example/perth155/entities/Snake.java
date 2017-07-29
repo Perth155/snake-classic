@@ -24,8 +24,8 @@ public class Snake
 	{
 		setSnake();
 		this.point = 0;
-		this.xVel = 0;
-		this.yVel = 1;
+		this.xVel = 1;
+		this.yVel = 0;
 		this.speed = 100;
 	}
 
@@ -134,5 +134,6 @@ public class Snake
 		vacant.setCol((Constants.COLS + prevCol - xVel)%Constants.COLS);
 		Cell growth = new Cell(prevRow, prevCol, Constants.SNAKE_BODY);
 		body.add(growth);
+		point++;
 	}
 }

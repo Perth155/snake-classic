@@ -1,26 +1,19 @@
 package com.example.perth155.gui;
 
 import java.awt.Color;
-import java.awt.Desktop.Action;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.List;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
+import java.io.FileInputStream;
+import java.net.URL;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-
-import java.util.Arrays;
 import java.util.LinkedList;
-
 import com.example.perth155.entities.Cell;
 import com.example.perth155.entities.GridManager;
 import com.example.perth155.entities.Snake;
@@ -29,23 +22,29 @@ import com.example.perth155.gameplay.Constants;
 
 public class Window extends JFrame
 {
-	//content of each grid element.
-
 	private int winHeightWidth;
 	private GridManager grids;
+	Font gameFont;
 	Content cn;
-
+	
 	public Window()
 	{
 		super("Snake Classic");
+		setGameFont();
 		winHeightWidth = getDimension();
 		grids = new GridManager(Constants.ROWS);
 		setSize(winHeightWidth+100,winHeightWidth+250);
 		cn = new Content();
 		add(cn);
+		cn.requestFocus();
 	}
-
-
+	
+	
+	public void reset()
+	{
+		grids = new GridManager(Constants.ROWS);
+		cn.updateGrids();
+	}
 
 	private int getDimension()
 	{
@@ -69,8 +68,55 @@ public class Window extends JFrame
 	public void render()
 	{
 		cn.fillSnakeBodyAndItem();
+		cn.updateScores();
+	}
+	
+	
+	public int getScore()
+	{
+		return grids.getSnake().getPoint();
 	}
 
+	public void setHiScore(int hs)
+	{
+		cn.updateHighScore(hs);
+	}
+	
+	public void setNewHiScore(int score) {
+		cn.setNewHighScore(score);
+	}
+	
+	
+	private void setGameFont() 
+	{
+	    try {
+	    	gameFont = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream("res/font/VT323-Regular.ttf"));
+	    	gameFont = gameFont.deriveFont(27F);
+	    	gameFont = gameFont.deriveFont(gameFont.getStyle() | Font.BOLD);
+	    	//fontSmall = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream("font.ttf"));
+	    	//fontSmall.deriveFont(16F);
+		}catch (Exception e) {
+			e.printStackTrace();
+			gameFont = new Font("Monospaced", Font.BOLD, 24);
+		} 
+	}
+	
+	
+	public Font getGameFont()
+	{
+		return gameFont;
+	}
+	
+	public void setGameOverText(String str)
+	{
+		cn.gameOverText.setText(str);
+		cn.gameOverText.setOpaque(true);
+	}
+	
+	public JPanel getContent()
+	{
+		return cn;
+	}
 
 	/**
 	 * An inner class for the JPanel where the game will be rendered in.
@@ -81,6 +127,8 @@ public class Window extends JFrame
 		private JLabel[][] gridContent;
 		private JLabel highScoreText;
 		private JLabel scoreText;
+		private JLabel gameOverText;
+		private JButton jb;
 		private Color backGroundColor;
 
 
@@ -94,22 +142,30 @@ public class Window extends JFrame
 			setPreferredSize(new Dimension(winHeightWidth+100, winHeightWidth+250));
 			setUpOuterPlayArea();
 		}
-
+		
+		
 		public void setUpOuterPlayArea()
 		{
-			Font gameFont = new Font("Monospaced", Font.BOLD, 24);
-			JLabel sc = new JLabel(" Score : 000 ");
-			sc.setFont(gameFont);
-			sc.setForeground(Color.BLUE);
-			JLabel hSc = new JLabel(" High Score : 999 ");
-			hSc.setForeground(Color.RED);
-			hSc.setFont(gameFont);
-			JButton jb = new JButton("Restart");
+			//Font gameFont = new Font("Monospaced", Font.BOLD, 24);
+			scoreText = new JLabel(" Score : " +getSnake().getPoint()+" ");
+			scoreText.setFont(gameFont);
+			scoreText.setForeground(Color.BLUE);
+			highScoreText = new JLabel(" High Score :  ");
+			highScoreText.setForeground(new Color(5, 90, 5));
+			highScoreText.setFont(gameFont);
+			gameOverText = new JLabel("         ");
+			gameOverText.setForeground(Color.WHITE);
+			gameOverText.setBackground(Color.RED);
+			//gameOverText.setOpaque(true);
+			gameOverText.setFont(gameFont);
+			highScoreText.setFont(gameFont);
+			jb = new JButton("Restart");
 			jb.setBackground(Color.yellow);
 			jb.setFont(gameFont);
-			add(sc);
-			add(hSc);
+			add(scoreText);
+			add(highScoreText);
 			add(jb);
+			add(gameOverText);
 		}
 
 
@@ -156,7 +212,32 @@ public class Window extends JFrame
 				gridContent[body.get(i).getRow()][body.get(i).getCol()].setBackground(Color.WHITE);
 			}
 		}
-
+		
+		
+		public void updateScores()
+		{
+			scoreText.setText(" Score : " +getSnake().getPoint()+" ");
+		}
+		
+		
+		public void updateHighScore(int h)
+		{
+			highScoreText.setText(" High Score : " + h + " ");
+		}
+		
+		
+		public void setNewHighScore(int i)
+		{
+			updateScores();
+			updateHighScore(i);
+			scoreText.setForeground(Color.WHITE);
+			highScoreText.setForeground(Color.WHITE);
+			scoreText.setBackground(Color.BLUE);
+			scoreText.setOpaque(true);
+			highScoreText.setBackground(new Color(5, 90, 5));
+			highScoreText.setOpaque(true);
+		}
+		
 
 		public void updateGrids()
 		{
@@ -233,6 +314,14 @@ public class Window extends JFrame
 		}
 
 
+		public JButton getRestartButton() {
+			return jb;
+		}
+	}
+
+	public JButton getRestartButton() 
+	{
+		return cn.getRestartButton();
 	}
 
 
