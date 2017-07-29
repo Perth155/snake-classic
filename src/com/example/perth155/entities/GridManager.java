@@ -29,7 +29,7 @@ public class GridManager
 			Random rand = new Random();
 			int r = rand.nextInt(size);
 			int c = rand.nextInt(size);
-			//System.out.println(r + " "+c);
+			System.out.println(r + " "+c);
 			int count = 0;
 
 			if(r == sn.getHead().getRow() && c == sn.getHead().getRow())
@@ -88,6 +88,45 @@ public class GridManager
 	public Snake getSnake()
 	{
 		return this.sn;
+	}
+
+	public Item getItem()
+	{
+		return this.item;
+	}
+
+	/**
+	 * True if snake has eaten the item, false otherwise
+	 * @return state of the item. True if obtained.
+	 */
+	public boolean ItemObtained()
+	{
+		if(sn.getHead().getRow() == item.getLocation().getRow() &&
+				sn.getHead().getCol() == item.getLocation().getCol())
+		{
+			System.out.println(true);
+			return true;
+		}
+		return false;
+	}
+
+
+	/**
+	 * False if snake has eaten the itself to indicate gameover,
+	 * otherwise true returned.
+	 * @return state of the game, true if running.
+	 */
+	public boolean snakeDeath()
+	{
+		for(int i = 0; i < sn.getBody().size(); i++)
+		{
+			if(sn.getHead().getRow() == sn.getBody().get(i).getRow() &&
+					sn.getHead().getCol() == sn.getBody().get(i).getCol())
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

@@ -68,7 +68,7 @@ public class Window extends JFrame
 
 	public void render()
 	{
-		cn.fillSnakeBody();
+		cn.fillSnakeBodyAndItem();
 	}
 
 
@@ -139,13 +139,15 @@ public class Window extends JFrame
 		         }
 		      }
 		      updateGrids();
-		      fillSnakeBody();
+		      fillSnakeBodyAndItem();
 		}
 
-		public void fillSnakeBody()
+		public void fillSnakeBodyAndItem()
 		{
 			Cell head = grids.getSnake().getHead();
 			gridContent[head.getRow()][head.getCol()].setBackground(Color.pink);
+			Cell item = grids.getItem().getLocation();
+			gridContent[item.getRow()][item.getCol()].setBackground(Color.RED);
 			Cell vacant = grids.getSnake().getVacant();
 			gridContent[vacant.getRow()][vacant.getCol()].setBackground(backGroundColor);
 			LinkedList<Cell> body = (LinkedList<Cell>) grids.getSnake().getBody();
@@ -164,22 +166,14 @@ public class Window extends JFrame
 		        for (int col = 0; col < Constants.COLS; col++)
 		        {
 					int number = gridState[row][col];
-		            if (number == Constants.EMPTY)
-		            {
-		               gridContent[row][col].setText("");
-		               gridContent[row][col].setBackground(backGroundColor);
-		            } else if(number == Constants.ITEM){
-		               gridContent[row][col].setText("");
-		               gridContent[row][col].setBackground(Color.RED);
-		            }
-//		            else{
-//			           gridContent[row][col].setText("");
-//			           gridContent[row][col].setBackground(Color.PINK);
-//		            }
+
+		            gridContent[row][col].setText("");
+		            gridContent[row][col].setBackground(backGroundColor);
 		            gridContent[row][col].setOpaque(true);
 		            gridContent[row][col].setHorizontalAlignment(JLabel.CENTER);
 		            gridContent[row][col].setFont(new Font("Monospaced", Font.BOLD, 20));
-		            gridContent[row][col].setPreferredSize(new Dimension(winHeightWidth/20, winHeightWidth/20));
+		            gridContent[row][col].setPreferredSize(new Dimension(winHeightWidth/Constants.ROWS,
+		            		winHeightWidth/Constants.COLS));
 		         }
 		    }
 

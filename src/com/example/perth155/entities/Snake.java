@@ -26,7 +26,7 @@ public class Snake
 		this.point = 0;
 		this.xVel = 0;
 		this.yVel = 1;
-		this.speed = 300;
+		this.speed = 100;
 	}
 
 	/**
@@ -124,6 +124,15 @@ public class Snake
 		}
 		vacant.setRow(prevRow);
 		vacant.setCol(prevCol);
-		//vacant.setCol(c);
+	}
+
+	public void snakeExpansion()
+	{
+		int prevRow = vacant.getRow();
+		int prevCol = vacant.getCol();
+		vacant.setRow((Constants.ROWS + prevRow - yVel)%Constants.ROWS);
+		vacant.setCol((Constants.COLS + prevCol - xVel)%Constants.COLS);
+		Cell growth = new Cell(prevRow, prevCol, Constants.SNAKE_BODY);
+		body.add(growth);
 	}
 }
