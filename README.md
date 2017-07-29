@@ -6,7 +6,7 @@ A Java implementation of the classic game of [Snake](https://en.wikipedia.org/wi
 - Snake grows if item is eaten, making it progressively harder to control it.
 
 ## Resources
-- Font : [VT323](https://fonts.google.com/specimen/VT323?selection.family=VT323) by Peter Hull.
+- Font : [VT323](https://fonts.google.com/specimen/VT323?selection.family=VT323)
 
 
 
