@@ -88,17 +88,16 @@ public class GameLoop
 		{
 			disp.setNewHiScore(disp.getScore());
 			System.out.println("New High Score!");
-			// File scFile = new File("score/score.txt");
-			// FileWriter scWrite;
-			// try {
-			// 	int score = disp.getScore();
-			// 	scWrite = new FileWriter(scFile, false);
-			// 	scWrite.write(""+score);
-			// 	scWrite.close();
-			// } catch (IOException e) {
-			// 	e.printStackTrace();
-			// } // true to append
-			                                                     // false to overwrite.
+			File scFile = new File("res/score/score.txt");
+			FileWriter scWrite;
+			try {
+				int score = disp.getScore();
+				scWrite = new FileWriter(scFile, false);
+				scWrite.write(""+score);
+				scWrite.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
