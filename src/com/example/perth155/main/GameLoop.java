@@ -1,5 +1,6 @@
-package com.example.perth155.gameplay;
+package com.example.perth155.main;
 
+import com.example.perth155.entities.Constants;
 import com.example.perth155.entities.GridManager;
 import com.example.perth155.gui.Window;
 import java.awt.event.ActionEvent;
@@ -33,15 +34,15 @@ public class GameLoop
 		score = 0;
 		checkHighScoreUpdate();
 	    timer = new Timer();
-	    timer.schedule(new Turn(), 0, 1000 / 10); 
+	    timer.schedule(new Turn(), 0, 1000 / 10);
 	}
 
-	
+
 	private class Turn extends TimerTask
 	{
 
 		@Override
-		public void run() 
+		public void run()
 		{
 			gridList.snakeHeadMovement();
 			disp.render();
@@ -54,7 +55,7 @@ public class GameLoop
 				timer.cancel();
 			}
 		}
-		
+
 	}
 
 	private void checkGameState()
@@ -66,8 +67,8 @@ public class GameLoop
 			gridList.getSnake().snakeExpansion();
 		}
 	}
-	
-	
+
+
 	private void checkHighScoreUpdate()
 	{
 		try {
@@ -79,7 +80,7 @@ public class GameLoop
 		}
 		disp.setHiScore(score);
 	}
-	
+
 	private void setHighScore(int s)
 	{
 		disp.setGameOverText("Game Over");
@@ -88,33 +89,32 @@ public class GameLoop
 		{
 			disp.setNewHiScore(disp.getScore());
 			System.out.println("New High Score!");
-			File scFile = new File("res/score/score.txt");
-			FileWriter scWrite;
-			try {
-				int score = disp.getScore();
-				scWrite = new FileWriter(scFile, false);
-				scWrite.write(""+score);
-				scWrite.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} // true to append
+			// File scFile = new File("score/score.txt");
+			// FileWriter scWrite;
+			// try {
+			// 	int score = disp.getScore();
+			// 	scWrite = new FileWriter(scFile, false);
+			// 	scWrite.write(""+score);
+			// 	scWrite.close();
+			// } catch (IOException e) {
+			// 	e.printStackTrace();
+			// } // true to append
 			                                                     // false to overwrite.
 		}
 	}
-	
-	
+
+
 	private void pause()
 	{
 		this.timer.cancel();
 	}
-	
+
 	private void resume()
 	{
 		timer = new Timer();
 		timer.schedule(new Turn(), 0, 1000 / 10);
 	}
-	
+
 	private void setUpResetButton()
 	{
 		JButton resetButton = disp.getRestartButton();

@@ -1,6 +1,5 @@
 package com.example.perth155.entities;
 
-import com.example.perth155.gameplay.Constants;
 import java.util.Random;
 
 public class GridManager
@@ -29,7 +28,6 @@ public class GridManager
 			Random rand = new Random();
 			int r = rand.nextInt(size);
 			int c = rand.nextInt(size);
-			System.out.println(r + " "+c);
 			int count = 0;
 
 			if(r == sn.getHead().getRow() && c == sn.getHead().getRow())
@@ -104,7 +102,6 @@ public class GridManager
 		if(sn.getHead().getRow() == item.getLocation().getRow() &&
 				sn.getHead().getCol() == item.getLocation().getCol())
 		{
-			System.out.println(true);
 			return true;
 		}
 		return false;

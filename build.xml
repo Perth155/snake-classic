@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="snakes-classic" default="compile" basedir=".">
+
+
+	<property name="main" value="com.example.perth155.main.Game"/>
+	<property name="dir.jarfile" value="."/>
+	<property name="dir.src" value="./src/com/example/perth155"/>
+	<property name="project.name" value="Snake"/>
+
+	<path id="classpath">
+		<pathelement location="bin"/>
+		<pathelement location="res"/>
+	</path>
+
+
+	<target name="clean" description="remove binaries dir and jar file">
+		<delete dir="bin"/>
+		<delete dir="${dir.jarfile}" includes="**/${project.name}.jar"/>
+	</target>
+
+
+	<target name="create" depends="clean" description="create bin dir.">
+		<mkdir dir="bin"/>
+	</target>
+
+
+	<target name="compile" depends="create" description="compile java source code.">
+		<!-- Compile all Java files -->
+		<javac srcdir="${dir.src}/entities" destdir="./bin" includes="**/*.java" includeantruntime="false">
+		</javac>
+		<javac classpathref="classpath" srcdir="${dir.src}/gui" destdir="./bin" includes="**/*.java" includeantruntime="false">
+		</javac>
+		<javac classpathref="classpath" srcdir="${dir.src}/main" destdir="./bin" includes="**/*.java" includeantruntime="false">
+		</javac>
+		<!-- Create JAR to be used to run the project, export to base dir. -->
+		<jar destfile="${dir.jarfile}/${project.name}.jar" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="${main}"/>
+				<attribute name="Class-Path" value="."/>
+			</manifest>
+			<fileset dir="./bin"/>
+			<fileset dir="./res"/>
+		</jar>
+	</target>
+
+	<target name="run" description="run the application">
+     <java classpath="classpath" jar="${dir.jarfile}/${project.name}.jar" fork="true">
+     </java>
+	</target>
+
+</project>

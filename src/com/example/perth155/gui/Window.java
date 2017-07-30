@@ -6,51 +6,51 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.io.FileInputStream;
-import java.net.URL;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import java.util.LinkedList;
 import com.example.perth155.entities.Cell;
+import com.example.perth155.entities.Constants;
 import com.example.perth155.entities.GridManager;
 import com.example.perth155.entities.Snake;
-import com.example.perth155.gameplay.Constants;
 
 
 public class Window extends JFrame
 {
-	private int winHeightWidth;
+	private int winHeight;
+	private int winWidth;
 	private GridManager grids;
 	Font gameFont;
 	Content cn;
-	
+
 	public Window()
 	{
 		super("Snake Classic");
 		setGameFont();
-		winHeightWidth = getDimension();
+		setWindowSize();
 		grids = new GridManager(Constants.ROWS);
-		setSize(winHeightWidth+100,winHeightWidth+250);
+		setSize(winWidth + 150,winHeight+250);
 		cn = new Content();
 		add(cn);
 		cn.requestFocus();
 	}
-	
-	
+
+
 	public void reset()
 	{
 		grids = new GridManager(Constants.ROWS);
 		cn.updateGrids();
 	}
 
-	private int getDimension()
+	private void setWindowSize()
 	{
-		if(Constants.SCREEN_SIZE.height < Constants.SCREEN_SIZE.width)
-			return (int)(Constants.SCREEN_SIZE.height*0.5);
-		return (int)(Constants.SCREEN_SIZE.width*0.5);
+		this.winHeight = (int)(Constants.SCREEN_SIZE.height*0.5);
+		this.winWidth = (int)(Constants.SCREEN_SIZE.width*0.5);
 	}
 
 
@@ -70,8 +70,8 @@ public class Window extends JFrame
 		cn.fillSnakeBodyAndItem();
 		cn.updateScores();
 	}
-	
-	
+
+
 	public int getScore()
 	{
 		return grids.getSnake().getPoint();
@@ -81,13 +81,13 @@ public class Window extends JFrame
 	{
 		cn.updateHighScore(hs);
 	}
-	
+
 	public void setNewHiScore(int score) {
 		cn.setNewHighScore(score);
 	}
-	
-	
-	private void setGameFont() 
+
+
+	private void setGameFont()
 	{
 	    try {
 	    	gameFont = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream("res/font/VT323-Regular.ttf"));
@@ -98,21 +98,21 @@ public class Window extends JFrame
 		}catch (Exception e) {
 			e.printStackTrace();
 			gameFont = new Font("Monospaced", Font.BOLD, 24);
-		} 
+		}
 	}
-	
-	
+
+
 	public Font getGameFont()
 	{
 		return gameFont;
 	}
-	
+
 	public void setGameOverText(String str)
 	{
 		cn.gameOverText.setText(str);
 		cn.gameOverText.setOpaque(true);
 	}
-	
+
 	public JPanel getContent()
 	{
 		return cn;
@@ -139,11 +139,11 @@ public class Window extends JFrame
 			backGroundColor = Color.DARK_GRAY;
 			setSnakeMovementControls();
 			render();
-			setPreferredSize(new Dimension(winHeightWidth+100, winHeightWidth+250));
+			setPreferredSize(new Dimension(winWidth+150, winHeight+250));
 			setUpOuterPlayArea();
 		}
-		
-		
+
+
 		public void setUpOuterPlayArea()
 		{
 			//Font gameFont = new Font("Monospaced", Font.BOLD, 24);
@@ -164,7 +164,7 @@ public class Window extends JFrame
 			jb.setFont(gameFont);
 			add(scoreText);
 			add(highScoreText);
-			add(jb);
+			//add(jb);
 			add(gameOverText);
 		}
 
@@ -190,8 +190,13 @@ public class Window extends JFrame
 		    {
 		        for (int col = 0; col < Constants.COLS; col++)
 		        {
-		            gridContent[row][col] = new JLabel(); // allocate element of array
-		            add(gridContent[row][col]);  // ContentPane adds JTextField
+		        	if(col != Constants.COLS-1)
+		        		gridContent[row][col] = new JLabel(""); // allocate element of array
+		        	else
+		        	{
+		        		gridContent[row][col] = new JLabel("<html><br></html>", SwingConstants.CENTER);
+		        	}
+		        	add(gridContent[row][col]);  // ContentPane adds JTextField
 		         }
 		      }
 		      updateGrids();
@@ -212,20 +217,20 @@ public class Window extends JFrame
 				gridContent[body.get(i).getRow()][body.get(i).getCol()].setBackground(Color.WHITE);
 			}
 		}
-		
-		
+
+
 		public void updateScores()
 		{
 			scoreText.setText(" Score : " +getSnake().getPoint()+" ");
 		}
-		
-		
+
+
 		public void updateHighScore(int h)
 		{
 			highScoreText.setText(" High Score : " + h + " ");
 		}
-		
-		
+
+
 		public void setNewHighScore(int i)
 		{
 			updateScores();
@@ -237,7 +242,7 @@ public class Window extends JFrame
 			highScoreText.setBackground(new Color(5, 90, 5));
 			highScoreText.setOpaque(true);
 		}
-		
+
 
 		public void updateGrids()
 		{
@@ -248,13 +253,13 @@ public class Window extends JFrame
 		        {
 					int number = gridState[row][col];
 
-		            gridContent[row][col].setText("");
+		            //gridContent[row][col].setText("");
 		            gridContent[row][col].setBackground(backGroundColor);
 		            gridContent[row][col].setOpaque(true);
 		            gridContent[row][col].setHorizontalAlignment(JLabel.CENTER);
 		            gridContent[row][col].setFont(new Font("Monospaced", Font.BOLD, 20));
-		            gridContent[row][col].setPreferredSize(new Dimension(winHeightWidth/Constants.ROWS,
-		            		winHeightWidth/Constants.COLS));
+		            gridContent[row][col].setPreferredSize(new Dimension(winWidth/Constants.ROWS,
+		            		winHeight/Constants.COLS));
 		         }
 		    }
 
@@ -319,7 +324,7 @@ public class Window extends JFrame
 		}
 	}
 
-	public JButton getRestartButton() 
+	public JButton getRestartButton()
 	{
 		return cn.getRestartButton();
 	}

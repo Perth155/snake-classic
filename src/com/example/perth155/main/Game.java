@@ -1,10 +1,8 @@
 package com.example.perth155.main;
 
-import com.example.perth155.gui.*;
-
+import com.example.perth155.gui.Window;
 import javax.swing.JFrame;
 
-import com.example.perth155.gameplay.*;
 
 public class Game
 {
@@ -13,6 +11,8 @@ public class Game
 		Window w = new Window();
 		w.setVisible(true);
 		w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		w.setLocationRelativeTo(null);
+		w.setResizable(false);
 		GameLoop gl = new GameLoop(w);
 		//gl.run();
 	}

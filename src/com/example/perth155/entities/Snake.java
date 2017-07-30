@@ -3,7 +3,6 @@ package com.example.perth155.entities;
 
 import java.util.List;
 import java.util.LinkedList;
-import com.example.perth155.gameplay.Constants;
 
 /**
  * Snake class

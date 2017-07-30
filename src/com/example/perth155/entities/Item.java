@@ -1,7 +1,5 @@
 package com.example.perth155.entities;
 
-import com.example.perth155.gameplay.Constants;
-
 public class Item
 {
 	private Cell location;
