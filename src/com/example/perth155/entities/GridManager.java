@@ -50,6 +50,11 @@ public class GridManager
 	}
 
 
+	public void resetSnake(int size)
+	{
+		this.sn = new Snake();
+		this.spawnItem(size);
+	}
 
 	private void setUpGrids(int s)
 	{

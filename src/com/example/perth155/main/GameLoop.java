@@ -29,12 +29,12 @@ public class GameLoop
 		this.gameRunning = true;
 		this.dead = false;
 		disp = w;
-		setUpResetButton();
 		gridList = disp.getGridList();
 		score = 0;
 		checkHighScoreUpdate();
 	    timer = new Timer();
 	    timer.schedule(new Turn(), 0, 1000 / 10);
+	    setUpResetButton();
 	}
 
 
@@ -46,7 +46,6 @@ public class GameLoop
 		{
 			gridList.snakeHeadMovement();
 			disp.render();
-			//System.out.println("**"+gridList.getSnake().getHead().getRow() + " " + gridList.getSnake().getHead().getCol());
 			checkGameState();
 			// TODO Auto-generated method stub
 			if(!gameRunning)
@@ -115,6 +114,15 @@ public class GameLoop
 		timer.schedule(new Turn(), 0, 1000 / 10);
 	}
 
+	private void sleep(int timeInMilliSec)
+	{
+		try {
+			Thread.sleep(timeInMilliSec);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void setUpResetButton()
 	{
 		JButton resetButton = disp.getRestartButton();
@@ -122,9 +130,12 @@ public class GameLoop
 			@Override
 			public void actionPerformed(ActionEvent evt)
 			{
-				//gameRunning = false;
-				System.out.println("button pressed.");
+				pause();
+				sleep(1000);
 				disp.getContent().requestFocus();
+				disp.reset();
+				resume();
+				disp.setAllFontsToDefaults() ;
 			}
 		});
 	}

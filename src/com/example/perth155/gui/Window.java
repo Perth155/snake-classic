@@ -34,7 +34,7 @@ public class Window extends JFrame
 		setGameFont();
 		setWindowSize();
 		grids = new GridManager(Constants.ROWS);
-		setSize(winWidth + 150,winHeight+250);
+		setSize(winWidth+150,winHeight+250);
 		cn = new Content();
 		add(cn);
 		cn.requestFocus();
@@ -43,7 +43,7 @@ public class Window extends JFrame
 
 	public void reset()
 	{
-		grids = new GridManager(Constants.ROWS);
+		grids.resetSnake(Constants.ROWS);
 		cn.updateGrids();
 	}
 
@@ -118,6 +118,26 @@ public class Window extends JFrame
 		return cn;
 	}
 
+
+	public JButton getRestartButton()
+	{
+		return cn.getRestartButton();
+	}
+
+
+	/**
+	* Reset all the font style within the JPanel to defaults.
+	*/
+	public void setAllFontsToDefaults()
+	{
+		cn.gameOverText.setText("         ");
+		cn.gameOverText.setOpaque(false);
+		cn.scoreText.setOpaque(false);
+		cn.highScoreText.setOpaque(false);
+		cn.scoreText.setForeground(Color.BLUE);
+		cn.highScoreText.setForeground(new Color(5, 90, 5));
+	}
+
 	/**
 	 * An inner class for the JPanel where the game will be rendered in.
 	 */
@@ -164,7 +184,7 @@ public class Window extends JFrame
 			jb.setFont(gameFont);
 			add(scoreText);
 			add(highScoreText);
-			//add(jb);
+			add(jb);
 			add(gameOverText);
 		}
 
@@ -323,11 +343,5 @@ public class Window extends JFrame
 			return jb;
 		}
 	}
-
-	public JButton getRestartButton()
-	{
-		return cn.getRestartButton();
-	}
-
 
 }
