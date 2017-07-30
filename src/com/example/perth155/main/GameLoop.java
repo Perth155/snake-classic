@@ -12,13 +12,11 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import javax.swing.JButton;
 
 public class GameLoop
 {
 	private boolean gameRunning;
-	private boolean dead;
 	private Window disp;
 	private GridManager gridList;
 	private int score;
@@ -27,14 +25,13 @@ public class GameLoop
 	public GameLoop(Window w)
 	{
 		this.gameRunning = true;
-		this.dead = false;
 		disp = w;
 		gridList = disp.getGridList();
 		score = 0;
 		checkHighScoreUpdate();
-	    timer = new Timer();
-	    timer.schedule(new Turn(), 0, 1000 / 10);
-	    setUpResetButton();
+	  timer = new Timer();
+	  timer.schedule(new Turn(), 0, 1000 / 10);
+	  setUpResetButton();
 	}
 
 
@@ -50,7 +47,7 @@ public class GameLoop
 			// TODO Auto-generated method stub
 			if(!gameRunning)
 			{
-				setHighScore(score);
+				setHighScore();
 				timer.cancel();
 			}
 		}
@@ -80,10 +77,10 @@ public class GameLoop
 		disp.setHiScore(score);
 	}
 
-	private void setHighScore(int s)
+	private void setHighScore()
 	{
 		disp.setGameOverText("Game Over");
-		//System.out.println(score + "  " + disp.getScore());
+		System.out.println(score + "  " + disp.getScore());
 		if(score < disp.getScore())
 		{
 			disp.setNewHiScore(disp.getScore());
