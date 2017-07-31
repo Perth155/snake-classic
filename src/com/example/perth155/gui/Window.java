@@ -1,18 +1,21 @@
 package com.example.perth155.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.FileInputStream;
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.SwingConstants;
 import java.util.LinkedList;
 import com.example.perth155.entities.Cell;
 import com.example.perth155.entities.Constants;
@@ -20,26 +23,93 @@ import com.example.perth155.entities.GridManager;
 import com.example.perth155.entities.Snake;
 
 
+/**
+ * A class for rendering the game in a window.
+ * @author Abrar Amin
+ */
 public class Window extends JFrame
 {
+	private static final long serialVersionUID = 1L;
+
+
 	private int winHeight;
 	private int winWidth;
 	private GridManager grids;
-	Font gameFont;
-	Content cn;
+	private Font gameFont;
+	private GamePanel cn;
+	private JPanel outerArea;
+	private JPanel gameOverPanel;
+	private JLabel scoreText;
+	private JLabel highScoreText;
+	private JLabel gameOverText;
+	private JButton jb;
+	private JButton sound;
+	private JButton wall;
 
 	public Window()
 	{
 		super("Snake Classic");
-		setGameFont();
+		super.getContentPane().setLayout(new BorderLayout());
 		setWindowSize();
+		setGameFont();
+		getContentPane().setPreferredSize(new Dimension(winWidth, winHeight));
 		grids = new GridManager(Constants.ROWS);
-		setSize(winWidth+150,winHeight+250);
-		cn = new Content();
-		add(cn);
-		cn.requestFocus();
+		pack();
+		addGamePanel();
+		addOuterPlayPanel();
+		addGameOverPanel();
+		pack();
+		getContentPane().add(cn, BorderLayout.CENTER);
+		getContentPane().add(outerArea, BorderLayout.PAGE_START);
+		getContentPane().add(gameOverPanel, BorderLayout.PAGE_END);
+		System.out.println(getContentPane().getSize().width + " x " + getContentPane().getSize().height );
 	}
 
+
+	private void addGamePanel()
+	{
+		cn = new GamePanel();
+		cn.setSnakeMovementControls();
+		cn.requestFocus();
+		cn.setPreferredSize(new Dimension(winWidth, (int)(winHeight*0.8)));
+	}
+
+	private void addOuterPlayPanel()
+	{
+		scoreText = new JLabel(" Score : " +getSnake().getPoint()+" ");
+		scoreText.setFont(gameFont);
+		scoreText.setForeground(Color.CYAN);
+		highScoreText = new JLabel(" High Score :  ");
+		highScoreText.setForeground(Color.GREEN);
+		highScoreText.setFont(gameFont);
+		highScoreText.setFont(gameFont);
+		jb = new JButton("Restart");
+		jb.setBackground(Color.yellow);
+		jb.setFont(gameFont);
+		sound = new JButton("Sound:OFF");
+		sound.setBackground(Color.GRAY);
+		sound.setFont(gameFont);
+		outerArea = new JPanel();
+		outerArea.add(scoreText);
+		outerArea.add(highScoreText);
+		outerArea.add(jb);
+		outerArea.add(sound);
+		outerArea.setPreferredSize(new Dimension(winWidth, (int)(winHeight*0.1)));
+		outerArea.setBackground(Color.DARK_GRAY);
+	}
+
+	private void addGameOverPanel()
+	{
+		gameOverPanel = new JPanel();
+		gameOverText = new JLabel("         ");
+		gameOverText.setForeground(Color.WHITE);
+		gameOverText.setBackground(Color.RED);
+		gameOverText.setFont(gameFont);
+		gameOverPanel.add(gameOverText);
+		gameOverPanel.setPreferredSize(new Dimension(winWidth, (int)(winHeight*0.1)));
+		gameOverPanel.setBackground(Color.DARK_GRAY);
+		//getContentPane().add(gameOverPanel);
+	}
 
 	public void reset()
 	{
@@ -47,11 +117,18 @@ public class Window extends JFrame
 		cn.updateGrids();
 	}
 
+	/**
+	 * This method gets the screen resolution of the current screen, so that
+	 * the game could be scaled nicely regardless of screen resolution of the
+	 * computer the game is played in, set to half the width and height at launch
+	 * by default.
+	 */
 	private void setWindowSize()
 	{
 		this.winHeight = (int)(Constants.SCREEN_SIZE.height*0.5);
 		this.winWidth = (int)(Constants.SCREEN_SIZE.width*0.5);
 	}
+
 
 
 	public Snake getSnake()
@@ -68,7 +145,12 @@ public class Window extends JFrame
 	public void render()
 	{
 		cn.fillSnakeBodyAndItem();
-		cn.updateScores();
+		updateScores();
+	}
+
+	public void updateScores()
+	{
+		scoreText.setText(" Score : " +getSnake().getPoint()+" ");
 	}
 
 
@@ -77,40 +159,49 @@ public class Window extends JFrame
 		return grids.getSnake().getPoint();
 	}
 
-	public void setHiScore(int hs)
+
+	public void updateHighScore(int i)
 	{
-		cn.updateHighScore(hs);
+		highScoreText.setText(" High Score : " + i + " ");
 	}
 
-	public void setNewHiScore(int score) {
-		cn.setNewHighScore(score);
+	/**
+	 * The score and high score fields display the same value and remain highlighted
+	 * If there is a new highscore.
+	 * @param i the new highscore.
+	 */
+	public void setNewHighScore(int i)
+	{
+		updateScores();
+		updateHighScore(i);
+		scoreText.setForeground(Color.WHITE);
+		highScoreText.setForeground(Color.WHITE);
+		scoreText.setBackground(Color.BLUE);
+		scoreText.setOpaque(true);
+		highScoreText.setBackground(new Color(5, 90, 5));
+		highScoreText.setOpaque(true);
 	}
 
 
 	private void setGameFont()
 	{
+		float fontSize = (float) (winHeight*0.05);
+		System.out.println(fontSize);
 	    try {
 	    	gameFont = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream("res/font/VT323-Regular.ttf"));
-	    	gameFont = gameFont.deriveFont(27F);
+	    	gameFont = gameFont.deriveFont(fontSize);
 	    	gameFont = gameFont.deriveFont(gameFont.getStyle() | Font.BOLD);
-	    	//fontSmall = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream("font.ttf"));
-	    	//fontSmall.deriveFont(16F);
 		}catch (Exception e) {
 			e.printStackTrace();
-			gameFont = new Font("Monospaced", Font.BOLD, 24);
+			gameFont = new Font(Font.MONOSPACED, Font.BOLD, (int)fontSize);
 		}
-	}
-
-
-	public Font getGameFont()
-	{
-		return gameFont;
 	}
 
 	public void setGameOverText(String str)
 	{
-		cn.gameOverText.setText(str);
-		cn.gameOverText.setOpaque(true);
+		gameOverText.setText(str);
+		gameOverText.setOpaque(true);
+		gameOverPanel.setBackground(Color.RED);
 	}
 
 	public JPanel getContent()
@@ -118,74 +209,44 @@ public class Window extends JFrame
 		return cn;
 	}
 
-
 	public JButton getRestartButton()
 	{
-		return cn.getRestartButton();
+		return this.jb;
 	}
 
 
 	/**
-	* Reset all the font style within the JPanel to defaults.
-	*/
+	 * Un-highlight all scores, this is applied if a new game is started
+	 * after a game is restarted in which highscore had been received.
+	 */
 	public void setAllFontsToDefaults()
 	{
-		cn.gameOverText.setText("         ");
-		cn.gameOverText.setOpaque(false);
-		cn.scoreText.setOpaque(false);
-		cn.highScoreText.setOpaque(false);
-		cn.scoreText.setForeground(Color.BLUE);
-		cn.highScoreText.setForeground(new Color(5, 90, 5));
+		gameOverText.setText("         ");
+		gameOverText.setOpaque(false);
+		scoreText.setOpaque(false);
+		highScoreText.setOpaque(false);
+		scoreText.setForeground(Color.CYAN);
+		highScoreText.setForeground(Color.GREEN);
+		gameOverPanel.setBackground(Color.DARK_GRAY);
 	}
 
 	/**
-	 * An inner class for the JPanel where the game will be rendered in.
+	 * An inner class for the JPanel where only the game will be rendered in.
+	 * A size*size grid layout is used, defined by number of ROWS in
+	 * Constants. Note The number of rows and cols must me equal.
 	 */
-	private class Content extends JPanel
+	private class GamePanel extends JPanel
 	{
+		private static final long serialVersionUID = 1L;
 		private int[][] gridState;
-		private JLabel[][] gridContent;
-		private JLabel highScoreText;
-		private JLabel scoreText;
-		private JLabel gameOverText;
-		private JButton jb;
-		private Color backGroundColor;
+		private JTextField[][] gridContent;
 
-
-		public Content()
+		public GamePanel()
 		{
-			JPanel gui = new JPanel(new GridLayout(Constants.ROWS, Constants.ROWS));
-			//setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
-			backGroundColor = Color.DARK_GRAY;
+			super(new GridLayout(Constants.ROWS,0, 2, 2));
 			setSnakeMovementControls();
+			this.requestFocus();
 			render();
-			setPreferredSize(new Dimension(winWidth+150, winHeight+250));
-			setUpOuterPlayArea();
-		}
-
-
-		public void setUpOuterPlayArea()
-		{
-			//Font gameFont = new Font("Monospaced", Font.BOLD, 24);
-			scoreText = new JLabel(" Score : " +getSnake().getPoint()+" ");
-			scoreText.setFont(gameFont);
-			scoreText.setForeground(Color.BLUE);
-			highScoreText = new JLabel(" High Score :  ");
-			highScoreText.setForeground(new Color(5, 90, 5));
-			highScoreText.setFont(gameFont);
-			gameOverText = new JLabel("         ");
-			gameOverText.setForeground(Color.WHITE);
-			gameOverText.setBackground(Color.RED);
-			//gameOverText.setOpaque(true);
-			gameOverText.setFont(gameFont);
-			highScoreText.setFont(gameFont);
-			jb = new JButton("Restart");
-			jb.setBackground(Color.yellow);
-			jb.setFont(gameFont);
-			add(scoreText);
-			add(highScoreText);
-			add(jb);
-			add(gameOverText);
 		}
 
 
@@ -199,7 +260,7 @@ public class Window extends JFrame
 					gridState[y][z] = grids.getCellState(y, z).getFill();
 				}
 			}
-			gridContent = new JLabel[Constants.ROWS][Constants.COLS];
+			gridContent = new JTextField[Constants.ROWS][Constants.COLS];
 		}
 
 
@@ -210,14 +271,10 @@ public class Window extends JFrame
 		    {
 		        for (int col = 0; col < Constants.COLS; col++)
 		        {
-		        	if(col != Constants.COLS-1)
-		        		gridContent[row][col] = new JLabel(""); // allocate element of array
-		        	else
-		        	{
-		        		gridContent[row][col] = new JLabel("<html><br></html>", SwingConstants.CENTER);
-		        	}
-		        	add(gridContent[row][col]);  // ContentPane adds JTextField
-		         }
+		        		gridContent[row][col] = new JTextField();
+		        		gridContent[row][col].setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		        		add(gridContent[row][col]);
+		        }
 		      }
 		      updateGrids();
 		      fillSnakeBodyAndItem();
@@ -226,42 +283,18 @@ public class Window extends JFrame
 		public void fillSnakeBodyAndItem()
 		{
 			Cell head = grids.getSnake().getHead();
-			gridContent[head.getRow()][head.getCol()].setBackground(Color.pink);
+			gridContent[head.getRow()][head.getCol()].setBackground(Constants.SNAKE_HEAD_COLOR);
 			Cell item = grids.getItem().getLocation();
-			gridContent[item.getRow()][item.getCol()].setBackground(Color.RED);
+			gridContent[item.getRow()][item.getCol()].setBackground(Constants.ITEM_COLOR);
 			Cell vacant = grids.getSnake().getVacant();
-			gridContent[vacant.getRow()][vacant.getCol()].setBackground(backGroundColor);
+			gridContent[vacant.getRow()][vacant.getCol()].setBackground(Constants.BOARD_COLOR);
 			LinkedList<Cell> body = (LinkedList<Cell>) grids.getSnake().getBody();
 			for(int i = 0; i < body.size(); i++)
 			{
-				gridContent[body.get(i).getRow()][body.get(i).getCol()].setBackground(Color.WHITE);
+				gridContent[body.get(i).getRow()][body.get(i).getCol()].setBackground(Constants.SNAKE_COLOR);
 			}
 		}
 
-
-		public void updateScores()
-		{
-			scoreText.setText(" Score : " +getSnake().getPoint()+" ");
-		}
-
-
-		public void updateHighScore(int h)
-		{
-			highScoreText.setText(" High Score : " + h + " ");
-		}
-
-
-		public void setNewHighScore(int i)
-		{
-			updateScores();
-			updateHighScore(i);
-			scoreText.setForeground(Color.WHITE);
-			highScoreText.setForeground(Color.WHITE);
-			scoreText.setBackground(Color.BLUE);
-			scoreText.setOpaque(true);
-			highScoreText.setBackground(new Color(5, 90, 5));
-			highScoreText.setOpaque(true);
-		}
 
 
 		public void updateGrids()
@@ -271,15 +304,9 @@ public class Window extends JFrame
 
 		        for (int col = 0; col < Constants.COLS; col++)
 		        {
-					int number = gridState[row][col];
-
-		            //gridContent[row][col].setText("");
-		            gridContent[row][col].setBackground(backGroundColor);
+		            gridContent[row][col].setBackground(Constants.BOARD_COLOR);
 		            gridContent[row][col].setOpaque(true);
-		            gridContent[row][col].setHorizontalAlignment(JLabel.CENTER);
-		            gridContent[row][col].setFont(new Font("Monospaced", Font.BOLD, 20));
-		            gridContent[row][col].setPreferredSize(new Dimension(winWidth/Constants.ROWS,
-		            		winHeight/Constants.COLS));
+		            gridContent[row][col].setEditable(false);
 		         }
 		    }
 
@@ -337,11 +364,5 @@ public class Window extends JFrame
 			getInputMap().put(KeyStroke.getKeyStroke("D"), "moveRight");
 			getActionMap().put("moveRight", moveRight);
 		}
-
-
-		public JButton getRestartButton() {
-			return jb;
-		}
 	}
-
 }

@@ -7,11 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import javax.swing.JButton;
 
 public class GameLoop
@@ -24,14 +23,15 @@ public class GameLoop
 
 	public GameLoop(Window w)
 	{
-		this.gameRunning = true;
+		gameRunning = true;
 		disp = w;
+		System.out.println(w.getContentPane().getSize().width + " x " + w.getContentPane().getSize().height );
 		gridList = disp.getGridList();
 		score = 0;
 		checkHighScoreUpdate();
-	  timer = new Timer();
-	  timer.schedule(new Turn(), 0, 1000 / 10);
-	  setUpResetButton();
+	    timer = new Timer();
+	    timer.schedule(new Turn(), 0, 1000 / 10);
+	    setUpResetButton();
 	}
 
 
@@ -41,13 +41,14 @@ public class GameLoop
 		@Override
 		public void run()
 		{
+			disp.getContent().requestFocus();
 			gridList.snakeHeadMovement();
 			disp.render();
 			checkGameState();
 			// TODO Auto-generated method stub
 			if(!gameRunning)
 			{
-				setHighScore();
+				setHighScore(score);
 				timer.cancel();
 			}
 		}
@@ -74,27 +75,17 @@ public class GameLoop
 		} catch (FileNotFoundException e) {
 			score = 0;
 		}
-		disp.setHiScore(score);
+		disp.updateHighScore(score);
 	}
 
-	private void setHighScore()
+	private void setHighScore(int s)
 	{
 		disp.setGameOverText("Game Over");
-		System.out.println(score + "  " + disp.getScore());
 		if(score < disp.getScore())
 		{
-			disp.setNewHiScore(disp.getScore());
+			score = disp.getScore();
+			disp.setNewHighScore(disp.getScore());
 			System.out.println("New High Score!");
-			File scFile = new File("res/score/score.txt");
-			FileWriter scWrite;
-			try {
-				int score = disp.getScore();
-				scWrite = new FileWriter(scFile, false);
-				scWrite.write(""+score);
-				scWrite.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 

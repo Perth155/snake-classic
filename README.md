@@ -1,5 +1,5 @@
 # Snake Classic
-A Java implementation of the classic game of [Snake](https://en.wikipedia.org/wiki/Snake_(video_game)), with a GUI written using Java's swing lib. This game is based on Snake first featured in Nokia 6110 in 1997.
+A Java implementation of the classic game of [Snake](https://en.wikipedia.org/wiki/Snake_(video_game)), with a GUI written using Swing framework. This game is based on Snake featured in Nokia 6110 in 1997.
 
 ## Description
 - Move the snake's head towards an item to eat it to gain a point.
@@ -25,7 +25,7 @@ java -jar Snake.jar
 ## TODO
 - [X] Allow player to restart game.
 - [ ] Add sounds.
-- [ ] Fix scaling issues across different screen resolutions. Allow fullscreen.
+- [X] Fix scaling issues across different screen resolutions. Allow fullscreen.
 - [ ] Menu screen with difficulty levels (speed) on start. Add collidable walls.
 
 ## Resources
