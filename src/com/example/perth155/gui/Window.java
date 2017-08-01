@@ -8,6 +8,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.URL;
+
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -188,7 +191,8 @@ public class Window extends JFrame
 		float fontSize = (float) (winHeight*0.05);
 		System.out.println(fontSize);
 	    try {
-	    	gameFont = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream("res/font/VT323-Regular.ttf"));
+	    	InputStream ins = getClass().getResourceAsStream("/font/VT323-Regular.ttf");
+	    	gameFont = Font.createFont(Font.TRUETYPE_FONT, ins);
 	    	gameFont = gameFont.deriveFont(fontSize);
 	    	gameFont = gameFont.deriveFont(gameFont.getStyle() | Font.BOLD);
 		}catch (Exception e) {
@@ -214,6 +218,24 @@ public class Window extends JFrame
 		return this.jb;
 	}
 
+	public JButton getSoundButton()
+	{
+		return this.sound;
+	}
+
+	public void activateSoundButton()
+	{
+		sound.setText("Sound:ON ");
+		sound.setBackground(Color.magenta);
+		sound.setForeground(Color.WHITE);
+	}
+
+	public void deactivateSoundButton()
+	{
+		sound.setText("Sound:OFF");
+		sound.setBackground(Color.GRAY);
+		sound.setForeground(Color.DARK_GRAY);
+	}
 
 	/**
 	 * Un-highlight all scores, this is applied if a new game is started
