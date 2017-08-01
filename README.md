@@ -31,5 +31,5 @@ java -jar Snake.jar
 
 ## Resources
 - Font : [VT323](https://fonts.google.com/specimen/VT323?selection.family=VT323)
-- Audio Files : [successful](https://freesound.org/people/Kastenfrosch/sounds/162473/), [ping bing](https://freesound.org/people/GameAudio/sounds/220212/), [Boot sound](https://freesound.org/people/GameAudio/sounds/220207/)
+- Audio Files : [successful](https://freesound.org/people/Kastenfrosch/sounds/162473/), [Ping Bing](https://freesound.org/people/GameAudio/sounds/220212/), [Boot Sound](https://freesound.org/people/GameAudio/sounds/220207/)
 
