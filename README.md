@@ -24,9 +24,9 @@ java -jar Snake.jar
 
 ## TODO
 - [X] Allow player to restart game.
-- [ ] Add sounds.
+- [X] Add sounds.
 - [X] Fix scaling issues across different screen resolutions. Allow fullscreen.
-- [ ] Menu screen with difficulty levels (speed) on start. Add collidable walls.
+- [ ] Menu screen with difficulty levels (speed) on start. Add collidable walls as an option.
 
 ## Resources
 - Font : [VT323](https://fonts.google.com/specimen/VT323?selection.family=VT323)
