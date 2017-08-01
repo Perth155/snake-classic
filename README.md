@@ -11,11 +11,11 @@ A Java implementation of the classic game of [Snake](https://en.wikipedia.org/wi
 - Apache Ant
 
 ## Compile and Run
-To compile all Java files and create a single JAR file:
+To compile all Java files and create a single JAR file to deploy the application:
 ```
 ant compile
 ```
-Running the application
+Running the application-
 ```
 ant run
 # Alternatively
@@ -27,6 +27,9 @@ java -jar Snake.jar
 - [X] Add sounds.
 - [X] Fix scaling issues across different screen resolutions. Allow fullscreen.
 - [ ] Menu screen with difficulty levels (speed) on start. Add collidable walls as an option.
+- [ ] Use compressed audio formats instead of wav.
 
 ## Resources
 - Font : [VT323](https://fonts.google.com/specimen/VT323?selection.family=VT323)
+- Audio Files : [successful](https://freesound.org/people/Kastenfrosch/sounds/162473/), [ping bing](https://freesound.org/people/GameAudio/sounds/220212/), [Boot sound](https://freesound.org/people/GameAudio/sounds/220207/)
+
