@@ -1,5 +1,6 @@
 # Snake Classic
 A Java implementation of the classic game of [Snake](https://en.wikipedia.org/wiki/Snake_(video_game)), with a GUI written using Swing framework. This game is based on Snake featured in Nokia 6110 in 1997.
+
 ![snakes](https://i.imgur.com/GVEHqRH.png)
 
 ## Description
