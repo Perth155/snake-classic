@@ -30,13 +30,13 @@ public class GameLoop
 
 	public GameLoop(Window w)
 	{
-		gameRunning = true;
-		playSound = false;
-		disp = w;
-		loadAudioFiles();
-		gridList = disp.getGridList();
-		score = 0;
-		checkHighScoreUpdate();
+			gameRunning = true;
+			playSound = false;
+			disp = w;
+			loadAudioFiles();
+			gridList = disp.getGridList();
+			score = 0;
+			checkHighScoreUpdate();
 	    timer = new Timer();
 	    timer.schedule(new Turn(), 0, 1000 / 10);
 	    setUpResetButton();
@@ -46,30 +46,32 @@ public class GameLoop
 
 	private class Turn extends TimerTask
 	{
-		private int currentScore = 0;
-		@Override
-		public void run()
-		{
-			disp.getContent().requestFocus();
-			gridList.snakeHeadMovement();
-			disp.render();
-			if(currentScore < disp.getScore())
+			private int currentScore = 0;
+			@Override
+			public void run()
 			{
-				currentScore = disp.getScore();
-				if(playSound)
+				disp.getContent().requestFocus();
+				gridList.snakeHeadMovement();
+				disp.render();
+				if(currentScore < disp.getScore())
 				{
-					pointSound.setFramePosition(0);
-					pointSound.start();
+					currentScore = disp.getScore();
+					if(playSound)
+					{
+						if (pointSound.isRunning())
+						 		pointSound.stop();
+						pointSound.setFramePosition(0);
+						pointSound.start();
+					}
+				}
+				checkGameState();
+				// TODO Auto-generated method stub
+				if(!gameRunning)
+				{
+					setHighScore(score);
+					timer.cancel();
 				}
 			}
-			checkGameState();
-			// TODO Auto-generated method stub
-			if(!gameRunning)
-			{
-				setHighScore(score);
-				timer.cancel();
-			}
-		}
 
 	}
 
@@ -136,12 +138,12 @@ public class GameLoop
 			AudioInputStream pointAudio = AudioSystem.getAudioInputStream(getClass().getResource("/audio/point.wav"));
 			AudioInputStream deathAudio = AudioSystem.getAudioInputStream(getClass().getResource("/audio/game_over.wav"));
 			AudioInputStream successAudio = AudioSystem.getAudioInputStream(getClass().getResource("/audio/high_score.wav"));
-            pointSound = AudioSystem.getClip();
-            pointSound.open(pointAudio);
-            gameOverSound = AudioSystem.getClip();
-            highScoreSound = AudioSystem.getClip();
-            gameOverSound.open(deathAudio);
-            highScoreSound.open(successAudio);
+      pointSound = AudioSystem.getClip();
+      pointSound.open(pointAudio);
+      gameOverSound = AudioSystem.getClip();
+      highScoreSound = AudioSystem.getClip();
+      gameOverSound.open(deathAudio);
+      highScoreSound.open(successAudio);
 
 		} catch (Exception e) {
 			e.printStackTrace();
