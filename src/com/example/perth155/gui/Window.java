@@ -21,9 +21,9 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import java.util.LinkedList;
 import com.example.perth155.entities.Cell;
-import com.example.perth155.entities.Constants;
 import com.example.perth155.entities.GridManager;
 import com.example.perth155.entities.Snake;
+import com.example.perth155.util.Constants;
 
 
 /**

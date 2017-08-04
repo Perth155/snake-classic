@@ -1,6 +1,6 @@
 package com.example.perth155.main;
 
-import com.example.perth155.entities.Constants;
+import com.example.perth155.util.Constants;
 import com.example.perth155.entities.GridManager;
 import com.example.perth155.gui.Window;
 import java.awt.event.ActionEvent;

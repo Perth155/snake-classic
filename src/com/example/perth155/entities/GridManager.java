@@ -1,6 +1,7 @@
 package com.example.perth155.entities;
 
 import java.util.Random;
+import com.example.perth155.util.Constants;
 
 public class GridManager
 {

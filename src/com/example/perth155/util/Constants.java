@@ -1,9 +1,13 @@
-package com.example.perth155.entities;
+package com.example.perth155.util;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+/**
+* A collection of constants that are used throughout
+* the project.
+*/
 public final class Constants
 {
 	public static final int EMPTY = 0;
@@ -17,4 +21,8 @@ public final class Constants
 	public static final Color SNAKE_HEAD_COLOR = Color.pink;
 	public static final Color BOARD_COLOR = new Color(27,227,127);
 	public static final Color ITEM_COLOR = new Color(200, 0, 0);
+
+	private Constants(){
+		throw new AssertionError();
+  }
 }
