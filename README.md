@@ -13,7 +13,7 @@ A Java implementation of the classic game of [Snake](https://en.wikipedia.org/wi
 - Apache Ant
 
 ## Compile and Run
-To compile all Java files and create a single JAR file to deploy the application:
+To compile all Java files and create a single JAR file (to easily run the application):
 ```
 ant compile
 ```
