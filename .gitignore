@@ -1,0 +1,7 @@
+# Compiled class files and Packages.
+*.class
+*.jar
+/bin/
+
+# VIM files.
+*.swp
